@@ -144,7 +144,7 @@ export default {
           });
         }
       }
-      return new Response('# 錯誤: 該腳本不存在或已過期，請重新在網頁上生成。\nexit 1\n', { 
+      return new Response('# 错误: 该脚本不存在或已过期，请重新在网页上生成。\nexit 1\n', { 
         status: 404,
         headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Access-Control-Allow-Origin': '*' }
       });
@@ -156,7 +156,7 @@ export default {
         const body = (await request.json()) as { url?: string };
         const rawUrl = body.url || '';
         if (!rawUrl.trim()) {
-          return new Response(JSON.stringify({ error: '請輸入有效的節點內容' }), { 
+          return new Response(JSON.stringify({ error: '请输入有效的节点内容' }), { 
             status: 400, 
             headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } 
           });
@@ -204,7 +204,7 @@ export default {
         const domain = body.domain || '';
 
         if (!rawUrl.trim() || selectedIndices.length === 0) {
-          return new Response(JSON.stringify({ error: '無效的參數或未選擇節點' }), { 
+          return new Response(JSON.stringify({ error: '无效的参数或未选择节点' }), { 
             status: 400, 
             headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } 
           });
@@ -223,9 +223,9 @@ export default {
           
           scripts += await getArgoScriptFromGithub(node, port, token, domain) + '\n\n';
 
-          const targetDomain = (token.trim() && domain.trim()) ? domain.trim() : "請在VPS執行一鍵安裝腳本獲取臨時域名.trycloudflare.com";
+          const targetDomain = (token.trim() && domain.trim()) ? domain.trim() : "请在VPS执行一键安装脚本获取临时域名.trycloudflare.com";
           const connectionServer = cleanIp || targetDomain;
-          const argoNodeName = `${node.name}_Argo${cleanIp ? '_優選' : ''}`;
+          const argoNodeName = `${node.name}_Argo${cleanIp ? '_优选' : ''}`;
 
           let argoLink = '';
           if (node.type === 'vless') {
@@ -305,7 +305,7 @@ export default {
 
     if (request.method === 'GET' && url.pathname === '/favs') {
       if (!checkAuth(request, env)) {
-        return new Response(JSON.stringify({ error: '密碼錯誤或未授權', locked: true }), {
+        return new Response(JSON.stringify({ error: '密码错误或未授权', locked: true }), {
           status: 401,
           headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
         });
@@ -316,7 +316,7 @@ export default {
 
     if (request.method === 'POST' && url.pathname === '/favs') {
       if (!checkAuth(request, env)) {
-        return new Response(JSON.stringify({ error: '未授權' }), { status: 401, headers: { 'Access-Control-Allow-Origin': '*' } });
+        return new Response(JSON.stringify({ error: '未授权' }), { status: 401, headers: { 'Access-Control-Allow-Origin': '*' } });
       }
       try {
         const body = (await request.json()) as Record<string, string>;
@@ -338,7 +338,7 @@ export default {
 
     if (request.method === 'PUT' && url.pathname === '/favs') {
       if (!checkAuth(request, env)) {
-        return new Response(JSON.stringify({ error: '未授權' }), { status: 401, headers: { 'Access-Control-Allow-Origin': '*' } });
+        return new Response(JSON.stringify({ error: '未授权' }), { status: 401, headers: { 'Access-Control-Allow-Origin': '*' } });
       }
       try {
         const body = (await request.json()) as { index?: number; name?: string; url?: string; include?: string; exclude?: string; rename?: string };
@@ -362,7 +362,7 @@ export default {
 
     if (request.method === 'DELETE' && url.pathname === '/favs') {
       if (!checkAuth(request, env)) {
-        return new Response(JSON.stringify({ error: '未授權' }), { status: 401, headers: { 'Access-Control-Allow-Origin': '*' } });
+        return new Response(JSON.stringify({ error: '未授权' }), { status: 401, headers: { 'Access-Control-Allow-Origin': '*' } });
       }
       try {
         const body = (await request.json()) as { index?: number };
@@ -468,7 +468,7 @@ export default {
     }
 
     if (allNodes.length === 0) {
-      return new Response('未解析到任何有效節點。', { status: 400 });
+      return new Response('未解析到任何有效节点。', { status: 400 });
     }
 
     let filteredNodes = allNodes;
@@ -557,9 +557,9 @@ export default {
       if (renameParam) filterQuery += `&rename=${encodeURIComponent(renameParam)}`;
 
       const htmlInfo = `
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>轉換完成</title><style>body{background:#0f172a;color:#f8fafc;font-family:sans-serif;padding:40px;text-align:center;}a{display:inline-block;margin:10px;padding:12px 24px;background:#3b82f6;color:#fff;text-decoration:none;border-radius:8px;}</style></head>
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>转换完成</title><style>body{background:#0f172a;color:#f8fafc;font-family:sans-serif;padding:40px;text-align:center;}a{display:inline-block;margin:10px;padding:12px 24px;background:#3b82f6;color:#fff;text-decoration:none;border-radius:8px;}</style></head>
 <body>
-  <h1>⚡ 成功轉換 ${uniqueNodes.length} 個節點</h1>
+  <h1>⚡ 成功转换 ${uniqueNodes.length} 个节点</h1>
   <div>
     <a href="${host}/?url=${encodedUrl}${filterQuery}&target=clash">Clash Meta (YAML)</a>
     <a href="${host}/?url=${encodedUrl}${filterQuery}&target=singbox">Sing-Box (JSON)</a>
