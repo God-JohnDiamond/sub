@@ -797,11 +797,11 @@ export async function parseContent(content: string): Promise<ProxyNode[]> {
       if (decoded && protocols.some(p => decoded.includes(p))) {
         plainText = decoded.replace(/^\uFEFF/, '').trim(); 
       } else {
-        throw new Error("Base64 解碼成功，但內容並非有效的代理節點。");
+        throw new Error("Base64 解码成功，但内容并非有效的代理节点。");
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
-      throw new Error(`Base64 暴力解碼失敗: ${msg}`);
+      throw new Error(`Base64 暴力解码失败: ${msg}`);
     }
   }
   
@@ -823,7 +823,7 @@ export async function parseContent(content: string): Promise<ProxyNode[]> {
   } 
   
   if (nodes.length === 0) {
-    throw new Error("資料獲取成功，但未能成功配對到任何支援的節點格式。");
+    throw new Error("资料获取成功，但未能成功配对到任何支援的节点格式。");
   }
   
   return nodes;
