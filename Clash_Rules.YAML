@@ -76,7 +76,7 @@ dns:
     # 让国内网站与苹果服务强制返回真实 IP（配合 rule-set 属性）
     - 'rule-set:cn'
     - 'rule-set:private'
-    - 'rule-set:apple'
+#    - 'rule-set:apple'
   
   # 💥 1. 基础 DNS：必须使用传统实体 IP（不可改动）
   default-nameserver:
@@ -98,9 +98,9 @@ dns:
       - https://doh.pub/dns-query
 
     # 苹果服务
-    "rule-set:apple":
-      - https://223.5.5.5/dns-query
-      - https://8.8.8.8/dns-query
+#    "rule-set:apple":
+#      - https://223.5.5.5/dns-query
+#      - https://8.8.8.8/dns-query
 
   # 💥 4. 国外网站兜底 DNS（推荐使用海外顶级 IP 型 DoH，自动走代理，防污染且速度最快）
   nameserver:
@@ -331,7 +331,7 @@ rule-providers:
 # ==================================================
 rules:
   # 1. 广告与内网
-  - RULE-SET,category-ads-all,🛑 广告拦截
+#  - RULE-SET,category-ads-all,🛑 广告拦截
   - RULE-SET,private,🏠 私有网络
   - RULE-SET,private-ip,🏠 私有网络,no-resolve
 
