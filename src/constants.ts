@@ -4,7 +4,7 @@ export const REMOTE_CONFIG = {
   clash: 'https://raw.githubusercontent.com/sammy0101/cf-sub-converter/refs/heads/main/Clash_Rules.YAML'
 };
 
-// 方案 B1 內嵌緊急降級模板 (Sing-Box 1.14+ 規範)
+// 方案 B1 内嵌紧急降级模板 (Sing-Box 1.14+ 规范)
 export const FALLBACK_SINGBOX_RULES = JSON.stringify({
   log: { level: "info" },
   http_clients: [
@@ -12,7 +12,7 @@ export const FALLBACK_SINGBOX_RULES = JSON.stringify({
   ],
   dns: {
     servers: [
-      { tag: "remote-dns", type: "https", server: "8.8.8.8", detour: "🚀 節點選擇" },
+      { tag: "remote-dns", type: "https", server: "8.8.8.8", detour: "🚀 节点选择" },
       { tag: "local-dns", type: "udp", server: "223.5.5.5" },
       { tag: "system-dns", type: "local" },
       { tag: "fakeip-dns", type: "fakeip", inet4_range: "198.18.0.0/15", inet6_range: "fc00::/18" }
@@ -39,8 +39,8 @@ export const FALLBACK_SINGBOX_RULES = JSON.stringify({
   },
   inbounds: [{ type: "tun", tag: "tun-in", interface_name: "tun0", auto_route: true, stack: "mixed" }],
   outbounds: [
-    { type: "selector", tag: "🚀 節點選擇", outbounds: ["⚡ 自動選擇", "direct"] },
-    { type: "urltest", tag: "⚡ 自動選擇", outbounds: [], url: "https://www.gstatic.com/generate_204", interval: "3m" },
+    { type: "selector", tag: "🚀 节点选择", outbounds: ["⚡ 自动选择", "direct"] },
+    { type: "urltest", tag: "⚡ 自动选择", outbounds: [], url: "https://www.gstatic.com/generate_204", interval: "3m" },
     { type: "direct", tag: "direct" },
     { type: "block", tag: "block" }
   ],
@@ -65,27 +65,27 @@ mode: rule
 log-level: info
 proxies: []
 proxy-groups:
-  - name: 🚀 節點選擇
+  - name: 🚀 节点选择
     type: select
     proxies:
-      - ⚡ 自動選擇
+      - ⚡ 自动选择
       - DIRECT
-  - name: ⚡ 自動選擇
+  - name: ⚡ 自动选择
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies: []
 rules:
   - GEOIP,CN,DIRECT
-  - MATCH,🚀 節點選擇
+  - MATCH,🚀 节点选择
 `;
 
 export const HTML_PAGE = `<!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SubConverter Pro | 全能訂閱轉換器</title>
+  <title>SubConverter Pro | 全能订阅转换器</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -168,7 +168,7 @@ export const HTML_PAGE = `<!DOCTYPE html>
     .fav-actions { display: flex; gap: 8px; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); justify-content: flex-end; }
     .empty-state { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem; border: 1px dashed var(--border); border-radius: var(--radius-md); }
 
-    /* 💥 鎖定區域緊湊精緻美化樣式 */
+    /* 💥 锁定区域紧凑精致美化样式 */
     .lock-card {
       background: radial-gradient(circle at top, rgba(59, 130, 246, 0.08) 0%, rgba(15, 23, 42, 0.5) 100%);
       border: 1px solid rgba(59, 130, 246, 0.25);
@@ -282,66 +282,66 @@ export const HTML_PAGE = `<!DOCTYPE html>
   </header>
 
   <div class="container">
-    <!-- 1. 資料來源設定 (公開使用) -->
+    <!-- 1. 数据来源设置 (公开使用) -->
     <main class="panel">
       <div class="panel-header">
         <h2 class="panel-title">
           <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-          資料來源與規則設定
+          数据来源与规则设置
         </h2>
       </div>
       
       <div class="form-group">
-        <label for="urlInput">節點連結或訂閱地址 (支援多筆換行，含 WireGuard/WARP/AnyTLS)</label>
+        <label for="urlInput">节点链接或订阅地址 (支持多行换行，含 WireGuard/WARP/AnyTLS)</label>
         <textarea id="urlInput" placeholder="vmess://...\nvless://...\nwireguard://...\nhysteria2://...\nhttps://example.com/sub"></textarea>
       </div>
 
       <div class="form-group">
-        <label for="includeKeywords">僅保留關鍵字節點 (選填，多個用 | 分隔)</label>
-        <input type="text" id="includeKeywords" placeholder="例如: 🇭🇰|台灣|TW|IPLC">
+        <label for="includeKeywords">仅保留关键字节点 (选填，多个用 | 分隔)</label>
+        <input type="text" id="includeKeywords" placeholder="例如: 🇭🇰|台湾|TW|IPLC">
       </div>
 
       <div class="form-group">
-        <label for="excludeKeywords">排除關鍵字節點 (選填，多個用 | 分隔)</label>
-        <input type="text" id="excludeKeywords" placeholder="例如: 流量|官網|重置|5x">
+        <label for="excludeKeywords">排除关键字节点 (选填，多个用 | 分隔)</label>
+        <input type="text" id="excludeKeywords" placeholder="例如: 流量|官网|重置|5x">
       </div>
 
       <div class="form-group">
-        <label for="renameKeywords">節點名稱替換 (選填，多個用 | 分隔)</label>
-        <input type="text" id="renameKeywords" placeholder="例如: DEL-[69云]|移动优化-專線|ALL-JP">
+        <label for="renameKeywords">节点名称替换 (选填，多个用 | 分隔)</label>
+        <input type="text" id="renameKeywords" placeholder="例如: DEL-[69云]|移动优化-专线|ALL-JP">
       </div>
       
       <div class="form-group">
-        <label for="shortCode">自訂路徑短連結 (選填)</label>
+        <label for="shortCode">自定义路径短链接 (选填)</label>
         <input type="text" id="shortCode" placeholder="例如: my-sub-vip">
       </div>
       
       <button class="btn btn-primary" id="generateBtn" onclick="generate()" style="margin-top: 1.5rem;">
         <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-        <span>執行全客戶端轉換</span>
+        <span>执行全客户端转换</span>
       </button>
     </main>
 
-    <!-- 2. 轉換結果面板 (公開使用) -->
+    <!-- 2. 转换结果面板 (公开使用) -->
     <section class="results-wrapper" id="results">
       <div class="panel">
         <div class="panel-header">
           <h2 class="panel-title">
             <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-            多平台訂閱連結
+            多平台订阅链接
           </h2>
         </div>
         
-        <!-- 自適應 -->
+        <!-- 自适应 -->
         <div class="result-item">
           <div class="result-icon-box">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"></path></svg>
           </div>
-          <div class="result-info"><div class="result-name">自適應 (Auto)</div><div class="result-desc">自動識別客戶端協議</div></div>
+          <div class="result-info"><div class="result-name">自适应 (Auto)</div><div class="result-desc">自动识别客户端协议</div></div>
           <div class="result-input-wrapper"><input type="text" id="adaptiveUrl" readonly></div>
           <div class="result-actions">
-            <button class="btn-icon" onclick="copyResult('adaptiveUrl')" title="複製連結"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-            <button class="btn-icon" onclick="showQr('adaptiveUrl', 'auto')" title="顯示專屬 QR Code / 一鍵喚醒"><svg viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1"></rect><rect width="5" height="5" x="16" y="3" rx="1"></rect><rect width="5" height="5" x="3" y="16" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg></button>
+            <button class="btn-icon" onclick="copyResult('adaptiveUrl')" title="复制链接"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+            <button class="btn-icon" onclick="showQr('adaptiveUrl', 'auto')" title="显示专属 QR Code / 一键唤醒"><svg viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1"></rect><rect width="5" height="5" x="16" y="3" rx="1"></rect><rect width="5" height="5" x="3" y="16" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg></button>
           </div>
         </div>
 
@@ -350,11 +350,11 @@ export const HTML_PAGE = `<!DOCTYPE html>
           <div class="result-icon-box">
             <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
           </div>
-          <div class="result-info"><div class="result-name">Sing-Box</div><div class="result-desc">JSON 配置 · 支援掃碼自動填入</div></div>
+          <div class="result-info"><div class="result-name">Sing-Box</div><div class="result-desc">JSON 配置 · 支持扫码自动填入</div></div>
           <div class="result-input-wrapper"><input type="text" id="singboxUrl" readonly></div>
           <div class="result-actions">
-            <button class="btn-icon" onclick="copyResult('singboxUrl')" title="複製連結"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-            <button class="btn-icon" onclick="showQr('singboxUrl', 'singbox')" title="顯示 Sing-Box 專屬掃碼條碼"><svg viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1"></rect><rect width="5" height="5" x="16" y="3" rx="1"></rect><rect width="5" height="5" x="3" y="16" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg></button>
+            <button class="btn-icon" onclick="copyResult('singboxUrl')" title="复制链接"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+            <button class="btn-icon" onclick="showQr('singboxUrl', 'singbox')" title="显示 Sing-Box 专属扫码条码"><svg viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1"></rect><rect width="5" height="5" x="16" y="3" rx="1"></rect><rect width="5" height="5" x="3" y="16" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg></button>
           </div>
         </div>
 
@@ -363,11 +363,11 @@ export const HTML_PAGE = `<!DOCTYPE html>
           <div class="result-icon-box">
             <svg viewBox="0 0 24 24"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="6.5"></line></svg>
           </div>
-          <div class="result-info"><div class="result-name">Clash Meta (Mihomo)</div><div class="result-desc">YAML 配置 · 含低倍率/專線分組</div></div>
+          <div class="result-info"><div class="result-name">Clash Meta (Mihomo)</div><div class="result-desc">YAML 配置 · 含低倍率/专线分组</div></div>
           <div class="result-input-wrapper"><input type="text" id="clashUrl" readonly></div>
           <div class="result-actions">
-            <button class="btn-icon" onclick="copyResult('clashUrl')" title="複製連結"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-            <button class="btn-icon" onclick="showQr('clashUrl', 'clash')" title="顯示 Clash 專屬掃碼條碼"><svg viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1"></rect><rect width="5" height="5" x="16" y="3" rx="1"></rect><rect width="5" height="5" x="3" y="16" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg></button>
+            <button class="btn-icon" onclick="copyResult('clashUrl')" title="复制链接"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+            <button class="btn-icon" onclick="showQr('clashUrl', 'clash')" title="显示 Clash 专属扫码条码"><svg viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1"></rect><rect width="5" height="5" x="16" y="3" rx="1"></rect><rect width="5" height="5" x="3" y="16" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg></button>
           </div>
         </div>
 
@@ -376,11 +376,11 @@ export const HTML_PAGE = `<!DOCTYPE html>
           <div class="result-icon-box">
             <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
           </div>
-          <div class="result-info"><div class="result-name">Surge 5</div><div class="result-desc">標準 Surge .conf 格式</div></div>
+          <div class="result-info"><div class="result-name">Surge 5</div><div class="result-desc">标准 Surge .conf 格式</div></div>
           <div class="result-input-wrapper"><input type="text" id="surgeUrl" readonly></div>
           <div class="result-actions">
-            <button class="btn-icon" onclick="copyResult('surgeUrl')" title="複製連結"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-            <button class="btn-icon" onclick="showQr('surgeUrl', 'surge')" title="顯示 Surge 專屬掃碼條碼"><svg viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1"></rect><rect width="5" height="5" x="16" y="3" rx="1"></rect><rect width="5" height="5" x="3" y="16" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg></button>
+            <button class="btn-icon" onclick="copyResult('surgeUrl')" title="复制链接"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+            <button class="btn-icon" onclick="showQr('surgeUrl', 'surge')" title="显示 Surge 专属扫码条码"><svg viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1"></rect><rect width="5" height="5" x="16" y="3" rx="1"></rect><rect width="5" height="5" x="3" y="16" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg></button>
           </div>
         </div>
 
@@ -389,11 +389,11 @@ export const HTML_PAGE = `<!DOCTYPE html>
           <div class="result-icon-box">
             <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
           </div>
-          <div class="result-info"><div class="result-name">Quantumult X</div><div class="result-desc">server_remote 遠端節點列表</div></div>
+          <div class="result-info"><div class="result-name">Quantumult X</div><div class="result-desc">server_remote 远端节点列表</div></div>
           <div class="result-input-wrapper"><input type="text" id="quanxUrl" readonly></div>
           <div class="result-actions">
-            <button class="btn-icon" onclick="copyResult('quanxUrl')" title="複製連結"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-            <button class="btn-icon" onclick="showQr('quanxUrl', 'quanx')" title="顯示 Quantumult X 專屬掃碼條碼"><svg viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1"></rect><rect width="5" height="5" x="16" y="3" rx="1"></rect><rect width="5" height="5" x="3" y="16" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg></button>
+            <button class="btn-icon" onclick="copyResult('quanxUrl')" title="复制链接"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+            <button class="btn-icon" onclick="showQr('quanxUrl', 'quanx')" title="显示 Quantumult X 专属扫码条码"><svg viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1"></rect><rect width="5" height="5" x="16" y="3" rx="1"></rect><rect width="5" height="5" x="3" y="16" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg></button>
           </div>
         </div>
 
@@ -402,11 +402,11 @@ export const HTML_PAGE = `<!DOCTYPE html>
           <div class="result-icon-box">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
           </div>
-          <div class="result-info"><div class="result-name">Loon</div><div class="result-desc">Loon 代理配置清單</div></div>
+          <div class="result-info"><div class="result-name">Loon</div><div class="result-desc">Loon 代理配置清单</div></div>
           <div class="result-input-wrapper"><input type="text" id="loonUrl" readonly></div>
           <div class="result-actions">
-            <button class="btn-icon" onclick="copyResult('loonUrl')" title="複製連結"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-            <button class="btn-icon" onclick="showQr('loonUrl', 'loon')" title="顯示 Loon 專屬掃碼條碼"><svg viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1"></rect><rect width="5" height="5" x="16" y="3" rx="1"></rect><rect width="5" height="5" x="3" y="16" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg></button>
+            <button class="btn-icon" onclick="copyResult('loonUrl')" title="复制链接"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+            <button class="btn-icon" onclick="showQr('loonUrl', 'loon')" title="显示 Loon 专属扫码条码"><svg viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1"></rect><rect width="5" height="5" x="16" y="3" rx="1"></rect><rect width="5" height="5" x="3" y="16" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg></button>
           </div>
         </div>
 
@@ -418,83 +418,83 @@ export const HTML_PAGE = `<!DOCTYPE html>
           <div class="result-info"><div class="result-name">Base64 / 通用</div><div class="result-desc">通用明文 / v2rayNG / Shadowrocket</div></div>
           <div class="result-input-wrapper"><input type="text" id="base64Url" readonly></div>
           <div class="result-actions">
-            <button class="btn-icon" onclick="copyResult('base64Url')" title="複製連結"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-            <button class="btn-icon" onclick="showQr('base64Url', 'shadowrocket')" title="顯示通用掃碼條碼"><svg viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1"></rect><rect width="5" height="5" x="16" y="3" rx="1"></rect><rect width="5" height="5" x="3" y="16" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg></button>
+            <button class="btn-icon" onclick="copyResult('base64Url')" title="复制链接"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+            <button class="btn-icon" onclick="showQr('base64Url', 'shadowrocket')" title="显示通用扫码条码"><svg viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1"></rect><rect width="5" height="5" x="16" y="3" rx="1"></rect><rect width="5" height="5" x="3" y="16" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg></button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 3. Argo 隧道 2.0 生成器 (公開使用) -->
+    <!-- 3. Argo 隧道 2.0 生成器 (公开使用) -->
     <main class="panel">
       <div class="panel-header">
         <h2 class="panel-title" style="color: var(--primary);">
           <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
-          Argo 隧道 2.0 (支援優選 IP / 多端口部署)
+          Argo 隧道 2.0 (支持优选 IP / 多端口部署)
         </h2>
       </div>
       
       <div class="form-group">
         <button class="btn btn-ghost" id="parseVlessBtn" onclick="parseVlessNodes()" style="width: 100%; justify-content: center; font-weight: 600;">
-          第一步：解析並載入目前輸入的 VLESS / VMess 節點
+          第一步：解析并载入目前输入的 VLESS / VMess 节点
         </button>
       </div>
 
       <div id="vlessSelectorWrapper" style="display: none; margin-top: 1.25rem; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem; background: var(--bg-input);">
-        <label style="margin-bottom: 0.75rem; display: block; font-weight: 600;">選擇要轉換的原始節點 (可多選)：</label>
+        <label style="margin-bottom: 0.75rem; display: block; font-weight: 600;">选择要转换的原始节点 (可多选)：</label>
         <div id="vlessCheckboxList" style="display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto; margin-bottom: 1.25rem;"></div>
         
         <div class="form-group">
-          <label>1. VPS 本地監聽連接埠 (預設匹配選中節點)</label>
+          <label>1. VPS 本地监听端口 (默认匹配选中节点)</label>
           <input type="text" id="argoLocalPort" value="8080">
         </div>
 
         <div class="form-group">
-          <label>2. Cloudflare 優選 IP / 優選官方域名 (方案 D1：可填寫如 104.16.80.1 或 hk.cf.090227.xyz，選填)</label>
-          <input type="text" id="argoCleanIp" placeholder="若留空則預設直接使用 Argo 分配域名">
+          <label>2. Cloudflare 优选 IP / 优选官方域名 (方案 D1：可填写如 104.16.80.1 或 hk.cf.090227.xyz，选填)</label>
+          <input type="text" id="argoCleanIp" placeholder="若留空则默认直接使用 Argo 分配域名">
         </div>
 
         <div class="form-group">
-          <label>3. Cloudflare Tunnel Token (選填，留空啟用臨時隨機隧道)</label>
-          <input type="text" id="argoTunnelToken" placeholder="若使用固定隧道請貼上 Token">
+          <label>3. Cloudflare Tunnel Token (选填，留空启用临时随机隧道)</label>
+          <input type="text" id="argoTunnelToken" placeholder="若使用固定隧道请粘贴 Token">
         </div>
 
         <div class="form-group">
-          <label>4. 自訂綁定域名 (固定隧道必填)</label>
+          <label>4. 自定义绑定域名 (固定隧道必填)</label>
           <input type="text" id="argoCustomDomain" placeholder="例如: argo.yourdomain.com">
         </div>
 
         <button class="btn btn-primary" id="generateArgoBtn" onclick="generateArgo()" style="margin-top: 1rem; background: var(--success);">
-          第二步：生成 Argo 一鍵部署指令與節點
+          第二步：生成 Argo 一键部署指令与节点
         </button>
       </div>
     </main>
 
-    <!-- Argo 結果區 (公開使用) -->
+    <!-- Argo 结果区 (公开使用) -->
     <section class="results-wrapper" id="argoResults">
       <div class="panel">
-        <div class="panel-header"><h2 class="panel-title" style="color: var(--success);">Argo 部署指令與節點列表</h2></div>
+        <div class="panel-header"><h2 class="panel-title" style="color: var(--success);">Argo 部署指令与节点列表</h2></div>
         <div class="form-group">
-          <label>📋 VPS 一鍵部署命令 (root 權限執行)：</label>
+          <label>📋 VPS 一键部署命令 (root 权限执行)：</label>
           <div class="cmd-group">
             <input type="text" id="argoCurlCmd" readonly>
-            <button class="btn btn-ghost" onclick="copyText('argoCurlCmd')">複製指令</button>
+            <button class="btn btn-ghost" onclick="copyText('argoCurlCmd')">复制指令</button>
           </div>
         </div>
         <div class="form-group">
-          <label>🔗 新生成的 Argo 節點列表：</label>
+          <label>🔗 新生成的 Argo 节点列表：</label>
           <textarea id="argoBase64Sub" readonly style="min-height: 120px; font-size: 0.8rem;"></textarea>
-          <button class="btn btn-ghost" onclick="copyText('argoBase64Sub')" style="margin-top: 0.5rem; width: 100%;">複製全部節點</button>
+          <button class="btn btn-ghost" onclick="copyText('argoBase64Sub')" style="margin-top: 0.5rem; width: 100%;">复制全部节点</button>
         </div>
       </div>
     </section>
 
-    <!-- 4. 已儲存的配置 (受密碼保護區域) -->
+    <!-- 4. 已保存的配置 (受密码保护区域) -->
     <section class="panel">
       <div class="panel-header">
         <h2 class="panel-title">
           <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-          已儲存的配置
+          已保存的配置
         </h2>
         <div id="favHeaderActions" style="display: flex; gap: 8px;"></div>
       </div>
@@ -503,32 +503,32 @@ export const HTML_PAGE = `<!DOCTYPE html>
     </section>
   </div>
 
-  <!-- 新增/編輯配置對話框 -->
+  <!-- 新增/编辑配置对话框 -->
   <div class="modal-overlay" id="modal">
     <div class="modal-content">
       <h3 id="modalTitle" style="margin-bottom: 1rem;">新增配置</h3>
-      <div class="form-group"><label>配置名稱</label><input type="text" id="favName"></div>
-      <div class="form-group"><label>節點內容 / 訂閱連結</label><textarea id="favUrl"></textarea></div>
-      <div class="form-group"><label>保留關鍵字</label><input type="text" id="favInclude"></div>
-      <div class="form-group"><label>排除關鍵字</label><input type="text" id="favExclude"></div>
-      <div class="form-group"><label>名稱替換規則</label><input type="text" id="favRename"></div>
+      <div class="form-group"><label>配置名称</label><input type="text" id="favName"></div>
+      <div class="form-group"><label>节点内容 / 订阅链接</label><textarea id="favUrl"></textarea></div>
+      <div class="form-group"><label>保留关键字</label><input type="text" id="favInclude"></div>
+      <div class="form-group"><label>排除关键字</label><input type="text" id="favExclude"></div>
+      <div class="form-group"><label>名称替换规则</label><input type="text" id="favRename"></div>
       <div class="modal-footer">
         <button class="btn btn-ghost" onclick="closeModal()">取消</button>
-        <button class="btn btn-primary" onclick="saveFav()" style="width: auto;">儲存</button>
+        <button class="btn btn-primary" onclick="saveFav()" style="width: auto;">保存</button>
       </div>
     </div>
   </div>
 
   <div class="toast" id="toast">
     <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-    <span id="toastMsg">提示訊息</span>
+    <span id="toastMsg">提示信息</span>
   </div>
 
   <script>
     var favs = [];
     var isFavLocked = false;
 
-    // 💥 恢復 localStorage：瀏覽器永久記住登入狀態，重開/刷新網頁均維持解鎖
+    // 💥 恢复 localStorage：浏览器永久记住登录状态，重开/刷新网页均维持解锁
     function getStoredPwd() {
       return localStorage.getItem('sub_fav_pwd') || '';
     }
@@ -550,14 +550,14 @@ export const HTML_PAGE = `<!DOCTYPE html>
             renderFavs();
           });
         } else {
-          renderErrorScreen('載入配置失敗');
+          renderErrorScreen('载入配置失败');
         }
       }).catch(function(e) {
-        renderErrorScreen('網路連線失敗');
+        renderErrorScreen('网络连接失败');
       });
     }
 
-    // 💥 精巧微縮的現代鎖定卡片
+    // 💥 精巧微缩的现代锁定卡片
     function renderLockScreen() {
       var headerActions = document.getElementById('favHeaderActions');
       headerActions.innerHTML = '';
@@ -571,13 +571,13 @@ export const HTML_PAGE = `<!DOCTYPE html>
             '<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>' +
           '</svg>' +
         '</div>' +
-        '<div class="lock-title">私密配置已鎖定</div>' +
-        '<div class="lock-desc">此區域受管理密碼保護，請輸入密碼解鎖</div>' +
+        '<div class="lock-title">私密配置已锁定</div>' +
+        '<div class="lock-desc">此区域受管理密码保护，请输入密码解锁</div>' +
         '<div class="lock-form">' +
-          '<input type="password" id="lockPwdInput" placeholder="請輸入管理密碼..." onkeydown="if(event.key===\\'Enter\\') unlockFavs()">' +
+          '<input type="password" id="lockPwdInput" placeholder="请输入管理密码..." onkeydown="if(event.key===\\'Enter\\') unlockFavs()">' +
           '<button class="btn btn-primary" onclick="unlockFavs()">' +
             '<svg viewBox="0 0 24 24" style="width:16px;height:16px;margin-right:4px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>' +
-            '解鎖配置' +
+            '解锁配置' +
           '</button>' +
         '</div>' +
       '</div>';
@@ -588,16 +588,16 @@ export const HTML_PAGE = `<!DOCTYPE html>
       document.getElementById('favGrid').innerHTML = '<div class="empty-state">' + msg + '</div>';
     }
 
-    // 💥 解鎖並寫入 localStorage
+    // 💥 解锁并写入 localStorage
     function unlockFavs() {
       var input = document.getElementById('lockPwdInput');
       var pwd = input ? input.value.trim() : '';
       if (!pwd) {
         triggerShake();
-        return showToast('請輸入管理密碼', false);
+        return showToast('请输入管理密码', false);
       }
 
-      showToast('正在驗證密碼...');
+      showToast('正在验证密码...');
       
       fetch('/favs', {
         headers: { 'X-Password': pwd }
@@ -608,15 +608,15 @@ export const HTML_PAGE = `<!DOCTYPE html>
             favs = data;
             isFavLocked = false;
             renderFavs();
-            showToast('🔓 解鎖成功！已記住登入狀態');
+            showToast('🔓 解锁成功！已记住登录状态');
           });
         } else {
           triggerShake();
-          showToast('❌ 密碼錯誤，請重新輸入', false);
+          showToast('❌ 密码错误，请重新输入', false);
         }
       }).catch(function() {
         triggerShake();
-        showToast('❌ 網路請求失敗', false);
+        showToast('❌ 网络请求失败', false);
       });
     }
 
@@ -628,12 +628,12 @@ export const HTML_PAGE = `<!DOCTYPE html>
       }
     }
 
-    // 💥 手動鎖定並清除 localStorage
+    // 💥 手动锁定并清除 localStorage
     function lockFavs() {
       localStorage.removeItem('sub_fav_pwd');
       isFavLocked = true;
       renderLockScreen();
-      showToast('🔒 已鎖定配置清單');
+      showToast('🔒 已锁定配置清单');
     }
     
     function renderFavs() {
@@ -642,15 +642,15 @@ export const HTML_PAGE = `<!DOCTYPE html>
         '<svg viewBox="0 0 24 24" style="width:16px;height:16px"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>' +
         '新增配置' +
       '</button>' +
-      '<button class="btn btn-ghost" onclick="lockFavs()" title="鎖定配置清單">' +
+      '<button class="btn btn-ghost" onclick="lockFavs()" title="锁定配置清单">' +
         '<svg viewBox="0 0 24 24" style="width:16px;height:16px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>' +
-        '鎖定' +
+        '锁定' +
       '</button>';
 
       var grid = document.getElementById('favGrid');
       if (!favs || favs.length === 0) {
         grid.className = '';
-        grid.innerHTML = '<div class="empty-state">目前尚未儲存配置，請點擊上方按鈕新增</div>';
+        grid.innerHTML = '<div class="empty-state">目前尚未保存配置，请点击上方按钮新增</div>';
         return;
       }
 
@@ -672,8 +672,8 @@ export const HTML_PAGE = `<!DOCTYPE html>
             includeBadge + excludeBadge + renameBadge +
           '</div>' +
           '<div class="fav-actions">' +
-            '<button class="btn btn-ghost" onclick="event.stopPropagation(); editFav(' + i + ')">編輯</button>' +
-            '<button class="btn btn-ghost btn-danger" onclick="event.stopPropagation(); deleteFav(' + i + ')">刪除</button>' +
+            '<button class="btn btn-ghost" onclick="event.stopPropagation(); editFav(' + i + ')">编辑</button>' +
+            '<button class="btn btn-ghost btn-danger" onclick="event.stopPropagation(); deleteFav(' + i + ')">删除</button>' +
           '</div>' +
         '</div>';
       }
@@ -689,13 +689,13 @@ export const HTML_PAGE = `<!DOCTYPE html>
       document.getElementById('excludeKeywords').value = f.exclude || '';
       document.getElementById('renameKeywords').value = f.rename || '';
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      showToast('已載入配置：' + f.name);
+      showToast('已载入配置：' + f.name);
     }
 
     function editFav(index) {
       if (!favs[index]) return;
       var f = favs[index];
-      document.getElementById('modalTitle').textContent = '編輯配置';
+      document.getElementById('modalTitle').textContent = '编辑配置';
       document.getElementById('favName').value = f.name || '';
       document.getElementById('favUrl').value = f.url || '';
       document.getElementById('favInclude').value = f.include || '';
@@ -706,7 +706,7 @@ export const HTML_PAGE = `<!DOCTYPE html>
     }
 
     function deleteFav(index) {
-      if (!confirm('確定要刪除這筆配置嗎？')) return;
+      if (!confirm('确定要删除这笔配置吗？')) return;
       var pwd = getStoredPwd();
       fetch('/favs', { 
         method: 'DELETE', 
@@ -718,12 +718,12 @@ export const HTML_PAGE = `<!DOCTYPE html>
       }).then(function(resp) {
         if (resp.ok) {
           loadFavs();
-          showToast('已成功刪除配置');
+          showToast('已成功删除配置');
         } else {
-          showToast('刪除失敗：未授權或密碼錯誤', false);
+          showToast('删除失败：未授权或密码错误', false);
         }
       }).catch(function(e) {
-        showToast('刪除失敗: ' + e.message, false);
+        showToast('删除失败: ' + e.message, false);
       });
     }
 
@@ -733,7 +733,7 @@ export const HTML_PAGE = `<!DOCTYPE html>
       var include = document.getElementById('favInclude').value.trim();
       var exclude = document.getElementById('favExclude').value.trim();
       var rename = document.getElementById('favRename').value.trim();
-      if (!name || !url) return showToast('請完整填寫名稱與節點內容', false);
+      if (!name || !url) return showToast('请完整填写名称与节点内容', false);
 
       var editIndex = document.getElementById('modal').dataset.edit;
       var pwd = getStoredPwd();
@@ -760,18 +760,18 @@ export const HTML_PAGE = `<!DOCTYPE html>
         if (resp.ok) {
           closeModal();
           loadFavs();
-          showToast('配置儲存成功！');
+          showToast('配置保存成功！');
         } else {
-          showToast('儲存失敗：密碼錯誤或未授權', false);
+          showToast('保存失败：密码错误或未授权', false);
         }
       }).catch(function() {
-        showToast('儲存失敗，請重試', false);
+        showToast('保存失败，请重试', false);
       });
     }
 
     function generate() {
       var raw = document.getElementById('urlInput').value.trim();
-      if (!raw) return showToast('請先輸入節點連結或訂閱網址', false);
+      if (!raw) return showToast('请先输入节点链接或订阅网址', false);
 
       var host = window.location.origin;
       var shortCode = document.getElementById('shortCode').value.trim();
@@ -790,7 +790,7 @@ export const HTML_PAGE = `<!DOCTYPE html>
         document.getElementById('base64Url').value = baseUrl + sep + 'target=base64';
 
         document.getElementById('results').classList.add('show');
-        showToast('全客戶端連結生成完畢！');
+        showToast('全客户端链接生成完毕！');
       };
 
       if (shortCode) {
@@ -817,37 +817,37 @@ export const HTML_PAGE = `<!DOCTYPE html>
 
       var profileName = document.getElementById('shortCode').value.trim() || 'SubConverter';
       var deepLink = rawUrl;
-      var displayTitle = '掃碼導入配置';
-      var clientName = '客戶端';
+      var displayTitle = '扫码导入配置';
+      var clientName = '客户端';
 
       if (clientType === 'singbox') {
         deepLink = 'sing-box://import-remote-profile?url=' + encodeURIComponent(rawUrl) + '#' + encodeURIComponent(profileName);
-        displayTitle = 'Sing-Box 專屬掃碼導入';
+        displayTitle = 'Sing-Box 专属扫码导入';
         clientName = 'Sing-Box';
       } else if (clientType === 'clash') {
         deepLink = 'clash://install-config?url=' + encodeURIComponent(rawUrl) + '&name=' + encodeURIComponent(profileName);
-        displayTitle = 'Clash / Mihomo 專屬導入';
+        displayTitle = 'Clash / Mihomo 专属导入';
         clientName = 'Clash';
       } else if (clientType === 'surge') {
         deepLink = 'surge:///install-config?url=' + encodeURIComponent(rawUrl);
-        displayTitle = 'Surge 5 專屬導入';
+        displayTitle = 'Surge 5 专属导入';
         clientName = 'Surge';
       } else if (clientType === 'quanx') {
         deepLink = 'quantumult-x:///add-resource?remote-resource=' + encodeURIComponent(JSON.stringify({ server_remote: [rawUrl + ', tag=' + profileName] }));
-        displayTitle = 'Quantumult X 專屬導入';
+        displayTitle = 'Quantumult X 专属导入';
         clientName = 'Quantumult X';
       } else if (clientType === 'loon') {
         deepLink = 'loon://import?type=config&url=' + encodeURIComponent(rawUrl);
-        displayTitle = 'Loon 專屬導入';
+        displayTitle = 'Loon 专属导入';
         clientName = 'Loon';
       } else if (clientType === 'shadowrocket') {
         deepLink = 'shadowrocket://add/sub://' + btoa(rawUrl) + '?title=' + encodeURIComponent(profileName);
-        displayTitle = 'Shadowrocket 專屬導入';
+        displayTitle = 'Shadowrocket 专属导入';
         clientName = 'Shadowrocket';
       }
 
       var win = window.open('', '_blank', 'width=440,height=560');
-      if (!win) return showToast('請允許瀏覽器開啟彈出視窗', false);
+      if (!win) return showToast('请允许浏览器打开弹出窗口', false);
 
       var qrHtml = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>' + displayTitle + '</title>' +
         '<meta name="viewport" content="width=device-width, initial-scale=1.0">' +
@@ -864,8 +864,8 @@ export const HTML_PAGE = `<!DOCTYPE html>
         '<div class="qr-container"><div id="qr"></div></div>' +
         '<div class="title">' + displayTitle + '</div>' +
         '<div class="subtitle">' + rawUrl + '</div>' +
-        '<a class="btn-open" href="' + deepLink + '">🚀 一鍵打開並導入 ' + clientName + '</a>' +
-        '<div class="hint-box">✨ 手機相機或 ' + clientName + ' App 掃描此二維碼，即可全自動填入名稱與網址！</div>' +
+        '<a class="btn-open" href="' + deepLink + '">🚀 一键打开并导入 ' + clientName + '</a>' +
+        '<div class="hint-box">✨ 手机相机或 ' + clientName + ' App 扫描此二维码，即可全自动填入名称与网址！</div>' +
         '<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><' + '/script>' +
         '<script>' +
           'setTimeout(function() {' +
@@ -886,7 +886,7 @@ export const HTML_PAGE = `<!DOCTYPE html>
 
     function parseVlessNodes() {
       var raw = document.getElementById('urlInput').value.trim();
-      if (!raw) return showToast('請先輸入節點內容', false);
+      if (!raw) return showToast('请先输入节点内容', false);
       fetch('/api/parse-argo', { 
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' }, 
@@ -894,7 +894,7 @@ export const HTML_PAGE = `<!DOCTYPE html>
       }).then(function(resp) {
         return resp.json();
       }).then(function(nodes) {
-        if (!nodes || nodes.length === 0) return showToast('未找到 VLESS/VMess 節點', false);
+        if (!nodes || nodes.length === 0) return showToast('未找到 VLESS/VMess 节点', false);
         var listEl = document.getElementById('vlessCheckboxList');
         var html = '';
         for (var i = 0; i < nodes.length; i++) {
@@ -912,7 +912,7 @@ export const HTML_PAGE = `<!DOCTYPE html>
     function generateArgo() {
       var raw = document.getElementById('urlInput').value.trim();
       var checkboxes = document.querySelectorAll('.vless-chk:checked');
-      if (checkboxes.length === 0) return showToast('請至少選擇一個節點', false);
+      if (checkboxes.length === 0) return showToast('请至少选择一个节点', false);
 
       var indices = [];
       for (var i = 0; i < checkboxes.length; i++) {
@@ -937,17 +937,17 @@ export const HTML_PAGE = `<!DOCTYPE html>
         var links = res.argoNodes.map(function(x) { return x.link; }).join('\\n');
         document.getElementById('argoBase64Sub').value = links;
         document.getElementById('argoResults').classList.add('show');
-        showToast('Argo 部署指令與節點已生成！');
+        showToast('Argo 部署指令与节点已生成！');
       });
     }
 
     function copyResult(id) {
       var el = document.getElementById(id);
-      navigator.clipboard.writeText(el.value).then(function() { showToast('已複製連結'); });
+      navigator.clipboard.writeText(el.value).then(function() { showToast('已复制链接'); });
     }
     function copyText(id) {
       var el = document.getElementById(id);
-      navigator.clipboard.writeText(el.value).then(function() { showToast('已成功複製到剪貼簿！'); });
+      navigator.clipboard.writeText(el.value).then(function() { showToast('已成功复制到剪贴板！'); });
     }
     function showToast(msg, isSuccess) {
       if (isSuccess === undefined) isSuccess = true;
