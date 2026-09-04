@@ -300,7 +300,7 @@ export async function toClashWithTemplate(nodes: ProxyNode[], env?: Env, forceRe
         if (!arr.includes(name)) arr.push(name);
       });
     });
-    // ================= 从这里开始复制 =================
+// ================= 从这里开始复制 =================
     // 1. 动态生成国家分组 (利用 utils.ts 加上的国旗特征)
     const countryGroupsMap = new Map<string, string[]>();
     // 预设好美观的分组名称
@@ -312,7 +312,6 @@ export async function toClashWithTemplate(nodes: ProxyNode[], env?: Env, forceRe
     };
 
     proxyNames.forEach((name) => {
-      // 抓取节点名前面的国旗 Emoji
       const match = name.match(/^([\uD83C][\uDDE6-\uDDFF][\uD83C][\uDDE6-\uDDFF]|🇺🇳)/);
       const flag = match ? match[1] : '🇺🇳';
       const groupName = flagToName[flag] || `${flag} 地区节点`;
@@ -324,10 +323,11 @@ export async function toClashWithTemplate(nodes: ProxyNode[], env?: Env, forceRe
     });
 
     const countryGroupNames: string[] = [];
+    const countryGroupsToInsert: any[] = []; // 🌟 先用一个临时数组把生成的国家组存起来
+    
     countryGroupsMap.forEach((nodeList, groupName) => {
       countryGroupNames.push(groupName);
-      // 创建独立的国家分组 (默认使用 url-test 自动优选该国家最快的节点)
-      groups.push({
+      countryGroupsToInsert.push({
         name: groupName,
         type: "url-test", 
         url: "http://www.gstatic.com/generate_204",
@@ -335,6 +335,16 @@ export async function toClashWithTemplate(nodes: ProxyNode[], env?: Env, forceRe
         proxies: nodeList
       });
     });
+
+    // 🌟 核心排版魔法：找到 "⚡ 自动选择" 的位置，把所有国家组插在它后面！
+    let insertIndex = groups.findIndex((g: any) => g.name === "⚡ 自动选择");
+    if (insertIndex !== -1) {
+      // 使用 splice 在指定索引后插入数组
+      groups.splice(insertIndex + 1, 0, ...countryGroupsToInsert);
+    } else {
+      // 如果没找到，兜底插在最前面
+      groups.unshift(...countryGroupsToInsert); 
+    }
 
     // 2. 智能注入模板原本的分流群组
     groups.forEach((group: any) => {
