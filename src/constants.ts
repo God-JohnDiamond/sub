@@ -1,7 +1,7 @@
 // src/constants.ts
 export const REMOTE_CONFIG = {
-  singbox: 'https://raw.githubusercontent.com/sammy0101/cf-sub-converter/refs/heads/main/Sing-Box_Rules.JSON',
-  clash: 'https://raw.githubusercontent.com/sammy0101/cf-sub-converter/refs/heads/main/Clash_Rules.YAML'
+  singbox: 'https://raw.githubusercontent.com/God-JohnDiamond/sub/main/Sing-Box_Rules.JSON',
+  clash: 'https://raw.githubusercontent.com/God-JohnDiamond/sub/main/Clash_Rules.YAML'
 };
 
 // 方案 B1 内嵌紧急降级模板 (Sing-Box 1.14+ 规范)
