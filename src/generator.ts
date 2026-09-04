@@ -300,6 +300,65 @@ export async function toClashWithTemplate(nodes: ProxyNode[], env?: Env, forceRe
         if (!arr.includes(name)) arr.push(name);
       });
     });
+    // ================= 从这里开始复制 =================
+    // 1. 动态生成国家分组 (利用 utils.ts 加上的国旗特征)
+    const countryGroupsMap = new Map<string, string[]>();
+    // 预设好美观的分组名称
+    const flagToName: Record<string, string> = {
+      '🇭🇰': '🇭🇰 香港节点', '🇹🇼': '🇹🇼 台湾节点', '🇯🇵': '🇯🇵 日本节点', '🇸🇬': '🇸🇬 狮城节点',
+      '🇺🇸': '🇺🇸 美国节点', '🇰🇷': '🇰🇷 韩国节点', '🇬🇧': '🇬🇧 英国节点', '🇩🇪': '🇩🇪 德国节点',
+      '🇫🇷': '🇫🇷 法国节点', '🇷🇺': '🇷🇺 俄罗斯节点', '🇳🇱': '🇳🇱 荷兰节点', '🇨🇦': '🇨🇦 加拿大节点',
+      '🇦🇺': '🇦🇺 澳洲节点', '🇮🇳': '🇮🇳 印度节点', '🇹🇷': '🇹🇷 土耳其节点', '🇺🇳': '🇺🇳 其他节点'
+    };
+
+    proxyNames.forEach((name) => {
+      // 抓取节点名前面的国旗 Emoji
+      const match = name.match(/^([\uD83C][\uDDE6-\uDDFF][\uD83C][\uDDE6-\uDDFF]|🇺🇳)/);
+      const flag = match ? match[1] : '🇺🇳';
+      const groupName = flagToName[flag] || `${flag} 地区节点`;
+      
+      if (!countryGroupsMap.has(groupName)) {
+        countryGroupsMap.set(groupName, []);
+      }
+      countryGroupsMap.get(groupName)!.push(name);
+    });
+
+    const countryGroupNames: string[] = [];
+    countryGroupsMap.forEach((nodeList, groupName) => {
+      countryGroupNames.push(groupName);
+      // 创建独立的国家分组 (默认使用 url-test 自动优选该国家最快的节点)
+      groups.push({
+        name: groupName,
+        type: "url-test", 
+        url: "http://www.gstatic.com/generate_204",
+        interval: 300,
+        proxies: nodeList
+      });
+    });
+
+    // 2. 智能注入模板原本的分流群组
+    groups.forEach((group: any) => {
+      if (!Array.isArray(group.proxies)) group.proxies = [];
+      const arr = group.proxies;
+
+      // 【防御机制】如果是我们刚建的国家组，或者是自带 filter 的 Meta 分组，绝对不把所有节点乱塞进去！
+      if (countryGroupNames.includes(group.name) || group.filter || group["include-all"]) {
+        return;
+      }
+
+      // 把国家分组优雅地放进主选择器里 (方便你在手机上直接选国家)
+      if (group.name === "🚀 节点选择" || group.name === "⚡ 自动选择" || group.name === "PROXY") {
+        countryGroupNames.forEach(cg => {
+          if (!arr.includes(cg)) arr.push(cg);
+        });
+      }
+
+      // 兜底逻辑：把所有单节点塞进 "💬 AI 服务" 等其他没有自定正则的分流组
+      proxyNames.forEach((name) => {
+        if (!arr.includes(name)) arr.push(name);
+      });
+    });
+    // ================= 复制到这里结束 =================
   }
 
   return yaml.dump(config, { indent: 2, noRefs: true });
