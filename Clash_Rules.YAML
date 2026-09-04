@@ -117,7 +117,12 @@ proxy-groups:
     type: select
     proxies:
       - ⚡ 自动选择
+      - 🚀 手动选择
       - DIRECT
+
+  - name: 🚀 手动选择
+    type: select
+    proxies:
 
   - name: ⚡ 自动选择
     type: url-test
@@ -131,23 +136,34 @@ proxy-groups:
       - ⚡ 自动选择
       - 🚀 节点选择
 
-  - name: 🍎 苹果服务
+  - name: 🔎 谷歌服务
+    type: select
+    proxies:
+      - DIRECT
+      - 🚀 节点选择
+  - name: 💻 github
     type: select
     proxies:
       - DIRECT
       - 🚀 节点选择
 
-  - name: Ⓜ️ 微软服务
-    type: select
-    proxies:
-      - DIRECT
-      - 🚀 节点选择
+#  - name: 🍎 苹果服务
+#    type: select
+#    proxies:
+#      - DIRECT
+#      - 🚀 节点选择
 
-  - name: 🎮 游戏平台
-    type: select
-    proxies:
-      - DIRECT
-      - 🚀 节点选择
+#  - name: Ⓜ️ 微软服务
+#    type: select
+#    proxies:
+#      - DIRECT
+#      - 🚀 节点选择
+
+#  - name: 🎮 游戏平台
+#    type: select
+#    proxies:
+#      - DIRECT
+#      - 🚀 节点选择
 
   - name: 🌐 非中国
     type: select
@@ -172,11 +188,11 @@ proxy-groups:
       - 🚀 节点选择
       - DIRECT
 
-  - name: 🛑 广告拦截
-    type: select
-    proxies:
-      - REJECT
-      - DIRECT
+#  - name: 🛑 广告拦截
+#    type: select
+#    proxies:
+#      - REJECT
+#      - DIRECT
 
 # ==================================================
 # 规则集 Rule Providers (采用 MetaCubeX meta 格式优化)
@@ -214,61 +230,77 @@ rule-providers:
     path: ./ruleset/private-ip.mrs
     interval: 86400
 
-  microsoft:
+  google:
     type: http
     behavior: domain
     format: mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs"
-    path: ./ruleset/microsoft.mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs"
+    path: ./ruleset/google.mrs
     interval: 86400
 
-  steam:
+  github:
     type: http
     behavior: domain
     format: mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam.mrs"
-    path: ./ruleset/steam.mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs"
+    path: ./ruleset/github.mrs
     interval: 86400
 
-  epicgames:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/epicgames.mrs"
-    path: ./ruleset/epicgames.mrs
-    interval: 86400
+#  microsoft:
+#    type: http
+#    behavior: domain
+#    format: mrs
+#    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs"
+#    path: ./ruleset/microsoft.mrs
+#    interval: 86400
 
-  ea:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/ea.mrs"
-    path: ./ruleset/ea.mrs
-    interval: 86400
+#  steam:
+#    type: http
+#    behavior: domain
+#    format: mrs
+#    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam.mrs"
+#    path: ./ruleset/steam.mrs
+#    interval: 86400
 
-  ubisoft:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/ubisoft.mrs"
-    path: ./ruleset/ubisoft.mrs
-    interval: 86400
+ # epicgames:
+ #   type: http
+ #   behavior: domain
+ #   format: mrs
+ #   url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/epicgames.mrs"
+ #   path: ./ruleset/epicgames.mrs
+ #   interval: 86400
 
-  blizzard:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/blizzard.mrs"
-    path: ./ruleset/blizzard.mrs
-    interval: 86400
+ # ea:
+ #   type: http
+ #   behavior: domain
+ #   format: mrs
+ #   url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/ea.mrs"
+ #   path: ./ruleset/ea.mrs
+ #   interval: 86400
 
-  apple:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.mrs"
-    path: ./ruleset/apple.mrs
-    interval: 86400
+#  ubisoft:
+#    type: http
+#    behavior: domain
+#    format: mrs
+#    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/ubisoft.mrs"
+#    path: ./ruleset/ubisoft.mrs
+#    interval: 86400
+
+#  blizzard:
+#    type: http
+#    behavior: domain
+#    format: mrs
+#    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/blizzard.mrs"
+#    path: ./ruleset/blizzard.mrs
+#    interval: 86400
+
+#  apple:
+#    type: http
+#    behavior: domain
+#    format: mrs
+#    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.mrs"
+#    path: ./ruleset/apple.mrs
+#    interval: 86400
 
   geolocation-non-cn:
     type: http
@@ -307,17 +339,19 @@ rules:
   - RULE-SET,my-ai,💬 AI 服务
 
   # 3. Microsoft 服务分流
-  - RULE-SET,microsoft,Ⓜ️ 微软服务
+#  - RULE-SET,microsoft,Ⓜ️ 微软服务
+  - RULE-SET,google,🔎 谷歌服务
+  - RULE-SET,github,💻 github
 
   # 4. 游戏平台分流
-  - RULE-SET,steam,🎮 游戏平台
-  - RULE-SET,epicgames,🎮 游戏平台
-  - RULE-SET,ea,🎮 游戏平台
-  - RULE-SET,ubisoft,🎮 游戏平台
-  - RULE-SET,blizzard,🎮 游戏平台
+#  - RULE-SET,steam,🎮 游戏平台
+#  - RULE-SET,epicgames,🎮 游戏平台
+#  - RULE-SET,ea,🎮 游戏平台
+#  - RULE-SET,ubisoft,🎮 游戏平台
+#  - RULE-SET,blizzard,🎮 游戏平台
 
   # 5. Apple 服务分流
-  - RULE-SET,apple,🍎 苹果服务
+#  - RULE-SET,apple,🍎 苹果服务
 
   # 6. 非中国网站：走代理
   - RULE-SET,geolocation-non-cn,🌐 非中国
