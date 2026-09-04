@@ -228,7 +228,7 @@ export async function toSingBoxWithTemplate(nodes: ProxyNode[], env?: Env, force
   if (lowRateTags.length > 0) {
     config.outbounds.unshift({
       type: 'selector',
-      tag: '🏎️ 低倍率節點',
+      tag: '🏎️ 低倍率节点',
       outbounds: lowRateTags
     });
   }
@@ -236,7 +236,7 @@ export async function toSingBoxWithTemplate(nodes: ProxyNode[], env?: Env, force
   if (iplcTags.length > 0) {
     config.outbounds.unshift({
       type: 'selector',
-      tag: '⚡ 專線加速',
+      tag: '⚡ 专线加速',
       outbounds: iplcTags
     });
   }
@@ -279,7 +279,7 @@ export async function toClashWithTemplate(nodes: ProxyNode[], env?: Env, forceRe
 
     if (lowRateNames.length > 0) {
       groups.unshift({
-        name: '🏎️ 低倍率節點',
+        name: '🏎️ 低倍率节点',
         type: 'select',
         proxies: lowRateNames
       });
@@ -287,7 +287,7 @@ export async function toClashWithTemplate(nodes: ProxyNode[], env?: Env, forceRe
 
     if (iplcNames.length > 0) {
       groups.unshift({
-        name: '⚡ 專線加速',
+        name: '⚡ 专线加速',
         type: 'select',
         proxies: iplcNames
       });
@@ -391,13 +391,13 @@ export function toSurge(nodes: ProxyNode[]): string {
   }
 
   lines.push('\n[Proxy Group]');
-  lines.push(`🚀 節點選擇 = select, ⚡ 自動選擇, DIRECT, ${nodeNames.join(', ')}`);
-  lines.push(`⚡ 自動選擇 = url-test, ${nodeNames.join(', ')}, url=http://www.gstatic.com/generate_204, interval=300, tolerance=50`);
-  lines.push(`🐟 漏網之魚 = select, 🚀 節點選擇, DIRECT`);
+  lines.push(`🚀 节点选择 = select, ⚡ 自动选择, DIRECT, ${nodeNames.join(', ')}`);
+  lines.push(`⚡ 自动选择 = url-test, ${nodeNames.join(', ')}, url=http://www.gstatic.com/generate_204, interval=300, tolerance=50`);
+  lines.push(`🐟 漏网之鱼 = select, 🚀 节点选择, DIRECT`);
 
   lines.push('\n[Rule]');
   lines.push('GEOIP,CN,DIRECT');
-  lines.push('FINAL,🐟 漏網之魚');
+  lines.push('FINAL,🐟 漏网之鱼');
 
   return lines.join('\n');
 }
