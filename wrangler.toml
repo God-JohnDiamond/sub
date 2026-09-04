@@ -1,0 +1,14 @@
+name = "sub"
+main = "src/index.ts"
+compatibility_date = "2024-04-01"
+
+[placement]
+mode = "smart"
+
+[[kv_namespaces]]
+binding = "SUB_CACHE"
+id = "71af29f10e474e6980a494e75239c7ce"
+
+[vars]
+# 💥 私密管理密碼（選填）：設定後將保護「已儲存的配置」管理區域，避免他人檢視或竄改
+# PAGE_PASSWORD = "your_secret_password"
