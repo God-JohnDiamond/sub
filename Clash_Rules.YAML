@@ -185,14 +185,6 @@ rule-providers:
     path: ./ruleset/my-ai.mrs
     interval: 86400
 
-  category-ads-all:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ads-all.mrs"
-    path: ./ruleset/category-ads-all.mrs
-    interval: 86400
-
   private:
     type: http
     behavior: domain
