@@ -135,10 +135,15 @@ proxy-groups:
   - name: 🔎 谷歌服务
     type: select
     proxies:
-      - DIRECT
       - 🚀 节点选择
 
   - name: 💻 github
+    type: select
+    proxies:
+      - 🚀 节点选择
+      - DIRECT
+
+  - name: 🍎 苹果服务
     type: select
     proxies:
       - DIRECT
@@ -166,12 +171,6 @@ proxy-groups:
     proxies:
       - 🚀 节点选择
       - DIRECT
-
-  - name: 🍎 苹果服务
-    type: select
-    proxies:
-      - DIRECT
-      - 🚀 节点选择
 
 # ==================================================
 # 规则集 Rule Providers (采用 MetaCubeX meta 格式优化)
