@@ -33,7 +33,7 @@ export function toRawLinks(nodes: ProxyNode[]): string {
           ? `[${node.server}]`
           : node.server;
         
-        return `vless://${node.uuid}@${node.server}:${node.port}?${params.toString()}#${encodeURIComponent(node.name)}`;
+        return `vless://${node.uuid}@${formattedServer}:${node.port}?${params.toString()}#${encodeURIComponent(node.name)}`;
       }
       if (node.type === 'hysteria2') {
         const params = new URLSearchParams();
