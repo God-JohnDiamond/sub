@@ -27,6 +27,12 @@ export function toRawLinks(nodes: ProxyNode[]): string {
           if (node.xhttpHost) params.set('host', node.xhttpHost);
           if (node.xhttpMode) params.set('mode', node.xhttpMode);
         }
+        
+        // 关键改动：如果 server 是 IPv6 地址（含有冒号且未包裹中括号），自动用 [ ] 包裹
+        const formattedServer = node.server.includes(':') && !node.server.startsWith('[')
+          ? `[${node.server}]`
+          : node.server;
+        
         return `vless://${node.uuid}@${node.server}:${node.port}?${params.toString()}#${encodeURIComponent(node.name)}`;
       }
       if (node.type === 'hysteria2') {
