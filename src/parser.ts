@@ -16,21 +16,84 @@ interface ParsedUri {
 function parseProxyUri(urlStr: string, defaultPort = 443): ParsedUri | null {
   try {
     const trimmed = urlStr.trim();
-    const match = trimmed.match(/^([a-zA-Z0-9_-]+):\/\/(?:([^:@/?#]+)(?::([^@/?#]*))?@)?(\[[a-fA-F0-9:]+\]|[^:/?#]+)(?::([0-9]+))?(?:\?([^#]*))?(?:#(.*))?$/);
-    if (!match) return null;
+    if (!trimmed) return null;
 
-    const protocol = match[1].toLowerCase();
-    const username = match[2] ? decodeURIComponent(match[2]) : '';
-    const password = match[3] ? decodeURIComponent(match[3]) : undefined;
-    let hostname = match[4];
-    if (hostname.startsWith('[') && hostname.endsWith(']')) {
-      hostname = hostname.slice(1, -1);
+    const protoIdx = trimmed.indexOf('://');
+    if (protoIdx === -1) return null;
+
+    const protocol = trimmed.slice(0, protoIdx).toLowerCase();
+    let rest = trimmed.slice(protoIdx + 3);
+
+    // 1. 提取 hash (节点名称)
+    let hash = '';
+    const hashIdx = rest.indexOf('#');
+    if (hashIdx !== -1) {
+      hash = tryDecodeURIComponent(rest.slice(hashIdx + 1));
+      rest = rest.slice(0, hashIdx);
     }
-    const port = match[5] ? parseInt(match[5], 10) : defaultPort;
-    const query = match[6] || '';
-    const hash = match[7] ? tryDecodeURIComponent(match[7]) : '';
 
+    // 2. 提取 query 参数 (?xxx=1)
+    let query = '';
+    const qIdx = rest.indexOf('?');
+    if (qIdx !== -1) {
+      query = rest.slice(qIdx + 1);
+      rest = rest.slice(0, qIdx);
+    }
     const params = new URLSearchParams(query);
+
+    // 3. 提取用户信息 (username / password / uuid)
+    let username = '';
+    let password: string | undefined = undefined;
+    const atIdx = rest.lastIndexOf('@');
+    let hostPort = rest;
+    if (atIdx !== -1) {
+      const userinfo = rest.slice(0, atIdx);
+      hostPort = rest.slice(atIdx + 1);
+      const colonIdx = userinfo.indexOf(':');
+      if (colonIdx !== -1) {
+        username = decodeURIComponent(userinfo.slice(0, colonIdx));
+        password = decodeURIComponent(userinfo.slice(colonIdx + 1));
+      } else {
+        username = decodeURIComponent(userinfo);
+      }
+    }
+
+    // 4. 解析 Host 与 Port（全面兼容 IPv6）
+    let hostname = '';
+    let port = defaultPort;
+
+    if (hostPort.startsWith('[')) {
+      // 标准 IPv6: [240e:...]:443 或 [240e:...]
+      const closeBracket = hostPort.indexOf(']');
+      if (closeBracket !== -1) {
+        hostname = hostPort.slice(1, closeBracket);
+        const colonAfter = hostPort.indexOf(':', closeBracket);
+        if (colonAfter !== -1) {
+          port = parseInt(hostPort.slice(colonAfter + 1), 10) || defaultPort;
+        }
+      } else {
+        hostname = hostPort.replace(/[\[\]]/g, '');
+      }
+    } else if (hostPort.split(':').length > 2) {
+      // 非标准 IPv6（没有加方括号，如 240e:xxx:xxx::1:443）
+      const lastColon = hostPort.lastIndexOf(':');
+      const possiblePort = parseInt(hostPort.slice(lastColon + 1), 10);
+      if (!isNaN(possiblePort)) {
+        hostname = hostPort.slice(0, lastColon);
+        port = possiblePort;
+      } else {
+        hostname = hostPort;
+      }
+    } else {
+      // 普通 IPv4 或域名
+      const [h, p] = hostPort.split(':');
+      hostname = h;
+      if (p) port = parseInt(p, 10) || defaultPort;
+    }
+
+    hostname = hostname.replace(/^\[|\]$/g, '').trim();
+    if (!hostname) return null;
+
     return { protocol, username, password, hostname, port, params, hash };
   } catch {
     return null;
