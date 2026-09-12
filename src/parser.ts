@@ -444,6 +444,12 @@ function parseHysteria2(urlStr: string): ProxyNode | null {
 
     const params = parsed.params;
     const name = parsed.hash || 'Hy2';
+
+    // 1. 提取证书指纹 pinSHA256
+    const pin = params.get('pinSHA256') || params.get('ca-sha256') || params.get('fingerprint') || undefined;
+
+    // 2. 修复 SNI：如果原链接没有显式提供 sni，就置为空（不要强行填入 IP hostname）
+    const explicitSni = params.get('sni') || params.get('peer') || undefined;
     
     const node: ProxyNode = {
       type: 'hysteria2',
@@ -452,11 +458,28 @@ function parseHysteria2(urlStr: string): ProxyNode | null {
       port: parsed.port,
       password: parsed.username,
       tls: true,
-      sni: params.get('sni') || parsed.hostname,
+      sni: explicitSni, // 👈 关键点：没有 sni 就留空，不再用 parsed.hostname 兜底
+      fingerprint: pin, // 👈 保存证书指纹
       skipCertVerify: params.get('insecure') === '1' || params.get('allowInsecure') === '1',
       obfs: params.get('obfs') || undefined,
       obfsPassword: params.get('obfs-password') || undefined
     };
+
+    // 兼顾类型定义中的 pinSHA256 字段
+    (node as any).pinSHA256 = pin;
+
+    // 3. 构建 Sing-box 配置对象
+    const tlsConfig: Record<string, unknown> = {
+      enabled: true,
+      insecure: node.skipCertVerify
+    };
+    if (node.sni) {
+      tlsConfig.server_name = node.sni;
+    }
+    if (pin) {
+      // sing-box 支持的证书指纹格式
+      tlsConfig.certificate_hash = pin;
+    }
 
     const sb: Record<string, unknown> = {
       tag: name,
@@ -464,22 +487,30 @@ function parseHysteria2(urlStr: string): ProxyNode | null {
       server: node.server,
       server_port: node.port,
       password: node.password,
-      tls: { enabled: true, server_name: node.sni, insecure: node.skipCertVerify }
+      tls: tlsConfig
     };
     if (node.obfs) {
       sb.obfs = { type: node.obfs, password: node.obfsPassword };
     }
     node.singboxObj = sb;
 
+    // 4. 构建 Clash 配置对象（给 Flclash 使用）
     const cl: Record<string, unknown> = {
       name,
       type: 'hysteria2',
       server: node.server,
       port: node.port,
       password: node.password,
-      sni: node.sni,
       'skip-cert-verify': node.skipCertVerify
     };
+    // 仅当存在有效 sni 时才写入 Clash 配置
+    if (node.sni) {
+      cl.sni = node.sni;
+    }
+    // Clash Meta / Flclash 的证书指纹字段是 fingerprint
+    if (pin) {
+      cl.fingerprint = pin;
+    }
     if (node.obfs) {
       cl.obfs = node.obfs;
       cl['obfs-password'] = node.obfsPassword;
