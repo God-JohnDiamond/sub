@@ -48,6 +48,8 @@ export interface ProxyNode {
   // 標籤特徵
   multiplier?: number;
   isIplc?: boolean;
+  pinSHA256?: string;
+  fingerprint?: string;
 }
 
 export interface CachedTemplate {
